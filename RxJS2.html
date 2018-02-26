@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>RxJS基础实现原理</title>
+</head>
+<body>
+    
+    <!-- RxJS是一个基于可观测数据流在异步编程应用中的库。 -->
+    <!-- 流是在时间流逝的过程中产生的一系列事件。它具有时间与事件响应的概念。 -->
+    
+    <!-- RxJS 是基于观察者模式和迭代器模式以函数式编程思维来实现的。 -->
+
+    <!-- 观察者模式 -->
+    <!-- 观察者模式在 Web 中最常见的应该是 DOM 事件的监听和触发。 -->
+
+    <!-- 订阅：通过 addEventListener 订阅 document.body 的 click 事件。 -->
+    <!-- 发布：当 body 节点被点击时，body 节点便会向订阅者发布这个消息。 -->
+
+    <script>
+        
+        document.body.addEventListener('click',function listener(e){
+            console.log(e);
+        })
+        
+    </script>
+
+
+
+</body>
+</html>
