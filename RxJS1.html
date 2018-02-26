@@ -59,6 +59,45 @@
 
     </script>
 
+    <!-- 优化已无用的请求仍然执行,增加判断 -->
+    <!-- 端判断返回数据与当前搜索是否一致，一致才走到渲染逻辑。 -->
+    
+    <input type="text" id="text2">
+
+    <script>
+        
+        var text = document.querySelector("#text2");
+        timer = null;
+        currentSearch = '';
+
+        text.addEventListener('keyup',(e)=>{
+            //清楚定时
+            clearTimeout(timer)
+
+            timer.setTimeout(function(){
+
+                //声明一个当前搜索的状态变量
+                currentSearch = '书';
+
+                var searchText = e.target.value;
+                $.ajax({
+                    url:`search.qq.com/${searchText}`,
+                    success:data=>{
+                        //判断数据返回和当前搜索一致
+                        if(data.search == currentSearch){
+                            //渲染
+                            render(data);
+                        }else{
+                            //...
+                        }
+                    }
+                },250)
+            })
+
+
+        })
+
+    </script>
 
 </body>
 </html>
