@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>demo1</title>
+</head>
+<body>
+
+    <!-- 例子--实现常规搜索功能 -->
+
+    <input type="text" id="text">
+
+    <script>
+        var text = document.querySelector('#text');
+        text.addEventListener('keyup',(e)=>{
+            var searchText = e.target.value;
+
+            //ajax
+            $.ajax({
+                url:`search.qq.com/${searchText}`,
+                success:data=>{
+
+                    // 拿到后台返回数据，并展示搜索结果
+                    render(data);
+                }
+            })
+
+        })
+    </script>
+
+</body>
+</html>
