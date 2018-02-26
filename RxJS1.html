@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>demo1</title>
 </head>
+
 <body>
 
     <!-- 例子--实现常规搜索功能 -->
@@ -14,13 +16,13 @@
 
     <script>
         var text = document.querySelector('#text');
-        text.addEventListener('keyup',(e)=>{
+        text.addEventListener('keyup', (e) => {
             var searchText = e.target.value;
 
             //ajax
             $.ajax({
-                url:`search.qq.com/${searchText}`,
-                success:data=>{
+                url: `search.qq.com/${searchText}`,
+                success: data => {
 
                     // 拿到后台返回数据，并展示搜索结果
                     render(data);
@@ -44,15 +46,15 @@
     <script>
         var text = document.querySelector('#text1');
         timer = null;
-        text.addEventListener('keyup',(e)=>{
-            
+        text.addEventListener('keyup', (e) => {
+
             // 在 250 毫秒内进行其他输入，则清除上一个定时器
             clearTimeout(timer);
 
             //250毫秒后触发
-            timer = setTimeout(()=>{
+            timer = setTimeout(() => {
                 console.log("发送请求…");
-            },250)
+            }, 250)
 
             //setTimeout 函数流 减少多余请求
         })
@@ -61,43 +63,54 @@
 
     <!-- 优化已无用的请求仍然执行,增加判断 -->
     <!-- 端判断返回数据与当前搜索是否一致，一致才走到渲染逻辑。 -->
-    
+
     <input type="text" id="text2">
 
     <script>
-        
+
         var text = document.querySelector("#text2");
         timer = null;
         currentSearch = '';
 
-        text.addEventListener('keyup',(e)=>{
+        text.addEventListener('keyup', (e) => {
             //清楚定时
             clearTimeout(timer)
 
-            timer.setTimeout(function(){
+            timer.setTimeout(function () {
 
                 //声明一个当前搜索的状态变量
                 currentSearch = '书';
 
                 var searchText = e.target.value;
                 $.ajax({
-                    url:`search.qq.com/${searchText}`,
-                    success:data=>{
+                    url: `search.qq.com/${searchText}`,
+                    success: data => {
                         //判断数据返回和当前搜索一致
-                        if(data.search == currentSearch){
+                        if (data.search == currentSearch) {
                             //渲染
                             render(data);
-                        }else{
+                        } else {
                             //...
                         }
                     }
-                },250)
+                }, 250)
             })
-
 
         })
 
     </script>
 
+    <!-- 以上虽然做了优化,但代码显得过多冗余,用RxJS实现: -->
+    <script>
+        var text = document.querySelector("#text");
+        var inputStream = Observable.fromEvent(text,'keyup')
+        .debounceTime(250)
+        .pluck('target','value')
+        .switchMap(url=>Http.get(url))
+        .subscribe(data=>render(data));
+                            
+    </script>
+
 </body>
+
 </html>
