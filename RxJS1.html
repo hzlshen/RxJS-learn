@@ -27,8 +27,38 @@
                 }
             })
 
+            //弊端：
+            //keyup 击键多少次 就会发送多少次请求
+            //输入 输入玛 利 亚 发送了三次请求 多了两次
+            //已无用的请求仍然执行
+            //一开始搜了“爱迪生”，然后马上改搜索“达尔文”。结果后台返回了“爱迪生”的搜索结果，
+            //执行渲染逻辑后结果框展示了“爱迪生”的结果，而不是当前正在搜索的“达尔文”，这是不正确的。
+
         })
     </script>
+
+    <!-- 优化  -->
+    <!-- 减少请求 -->
+    <input id="text1"></input>
+
+    <script>
+        var text = document.querySelector('#text1');
+        timer = null;
+        text.addEventListener('keyup',(e)=>{
+            
+            // 在 250 毫秒内进行其他输入，则清除上一个定时器
+            clearTimeout(timer);
+
+            //250毫秒后触发
+            timer = setTimeout(()=>{
+                console.log("发送请求…");
+            },250)
+
+            //setTimeout 函数流 减少多余请求
+        })
+
+    </script>
+
 
 </body>
 </html>
