@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>RxJS基础实现原理</title>
 </head>
+
 <body>
-    
+
     <!-- RxJS是一个基于可观测数据流在异步编程应用中的库。 -->
     <!-- 流是在时间流逝的过程中产生的一系列事件。它具有时间与事件响应的概念。 -->
-    
+
     <!-- RxJS 是基于观察者模式和迭代器模式以函数式编程思维来实现的。 -->
 
     <!-- 观察者模式 -->
@@ -20,14 +22,98 @@
     <!-- 发布：当 body 节点被点击时，body 节点便会向订阅者发布这个消息。 -->
 
     <script>
-        
-        document.body.addEventListener('click',function listener(e){
+
+        document.body.addEventListener('click', function listener(e) {
             console.log(e);
-        })
-        
+        }, false)
+
+        document.body.click();   //模拟用户点击
+
+
+
+        //迭代器模式
+
+        // 可以通过 iterator 方法来获取一个迭代对象，调用迭代对象的 next 方法将获取一个元素对象
+        var iterable = [1, 2];
+
+        var iterator = iterable[Symbol.iterator]();
+
+        iterator.next();    //{ value: "1", done: false}
+        iterator.next();    //{ value: "2", done: false}
+
+        iterator.next();    //{ value: undefind, done: true}
+
+        //元素对象中：value 表示返回值，done 表示是否已经到达最后。
+
+        //遍历迭代器
+
+        var iterable = [1, 2];
+        var iterator = iterable[Symbol.iterator]();
+
+        while (true) {
+            let result;
+            try {
+                result = iterator.next();   //获取下一个值
+            } catch{
+                handleError(err);  //错误处理
+            }
+
+            if (result.done) {
+                handleCompleted();  //完成后
+                break;
+            }
+            doSomething(result.value);
+        }
+
+
+        // 获取下一个值
+        // 调用 next 可以将元素一个个地返回，这样就支持了返回多次值。
+
+        // 无更多值(已完成)
+        // 当无更多值时，next 返回元素中 done 为 true。
+
+        // 错误处理
+        // 当 next 方法执行时报错，则会抛出 error 事件，所以可以用 try catch 包裹 next 方法处理可能出现的错误。
+
+
+        // RxJS 的观察者 + 迭代器模式
+        // RxJS 中含有两个基本概念：Observables 与 Observer。Observables 作为被观察者，是一个值或事件的流集合；而 Observer 则作为观察者，根据 Observables 进行处理。
+        // Observables 与 Observer 之间的订阅发布关系(观察者模式) 如下：
+
+        // 订阅：Observer 通过 Observable 提供的 subscribe() 方法订阅 Observable。
+        // 发布：Observable 通过回调 next 方法向 Observer 发布事件。
+
+        //伪代码
+
+        //Observer
+        var Observer = {
+            next(value){
+                alert(`收到${value}`);
+            }
+        };
+
+        //Observable
+        function Observable(Observer){
+            setTimeout(()=>{
+                Observer.next('A');
+            },1000)
+        }
+
+        //subscribe
+        Observable(Observer);
+
+        //体现迭代器
+        var Observer = {
+            next(value){  /*处理值*/  },
+            error(error){  /*处理异常*/  },
+            complete(){ /* 完成状态 */ }
+        }
+
+
     </script>
 
 
 
 </body>
+
 </html>
