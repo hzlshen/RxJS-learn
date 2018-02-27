@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Observer Pattern</title>
+</head>
+<body>
+    
+    <script>
+        
+        //Observer Pattern
+        //最简单的例子就是DOM事件监听
+        function clickHandler(e){
+            console.log('user click!');
+        }
+
+        document.body.addEventListener('click',clickHandler);
+
+        //先封装clickHandler方法
+        //再用addEventListener 监听点击事件
+        //每次鼠标在body 划过 就会执行一次clickHandler 并带e进来
+        //这就是观察者模式
+
+        //ES5 
+        function Producer(){
+
+            //判断 避免使用者不小心把Producer当作函数使用
+            if(!(this instanceof Producer)){
+                throw new Error("请用new Producer()!");
+            }
+
+            this.listeners =[];
+        }
+
+        //监听
+        Producer.prototype.addEventListener=function(listener){
+
+            if(typeof listener == 'function'){
+                this.listeners.push(listener);
+            }else{
+                throw new Error("listener 必须是 function");
+            }
+
+        }
+        
+
+        //移除监听
+        Producer.prototype.removeListener = function(listener){
+
+            this.listeners.splice(this.listeners.indexOf(listener), 1)
+
+        }
+
+        //发送通知
+        Producer.prototype.notify = function(message){
+            this.listeners.forEach(listener=>{
+                listener(message);
+            })
+        }
+
+        // ES6
+        class Producer{
+
+            constructor(){
+                this.listeners =[];
+            }
+
+        }
+
+
+
+    </script>
+
+
+</body>
+</html>
