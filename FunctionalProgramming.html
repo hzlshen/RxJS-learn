@@ -113,39 +113,231 @@
 
 
         //filter、
-        
+
         //forEach实现
         //过滤出rating值为5的元素
         var ratingIsFive = [];
 
-        newCourseList.forEach((course)=>{
-            if(course.rating == 5){
+        newCourseList.forEach((course) => {
+            if (course.rating == 5) {
                 ratingIsFive.push(course);
             }
         })
 
         // 用filter实现
-        Array.prototype.filter = function(callback){
+        Array.prototype.filter = function (callback) {
             //声明
             var result = [];
 
-            this.forEach((item,index)=>{
-                if(callback(item,index))
-                result.push(item);
+            this.forEach((item, index) => {
+                if (callback(item, index))
+                    result.push(item);
             });
 
             return result;
         }
 
         var ratingIsFive = newCourseList
-                        .filter((course)=>course.rating==5);
+            .filter((course) => course.rating == 5);
 
         //这样的格式就是流式
         var ratingIsFive = newCourseList
-                            .filter((course)=>course.rating==5)
-                            .map(course => course.title);
+            .filter((course) => course.rating == 5)
+            .map(course => course.title);
 
 
+        //处理二维数组
+        var user = {
+            id: 888,
+            name: 'JerryHong',
+            courseLists: [{
+                "name": "My Courses",
+                "courses": [{
+                    "id": 511019,
+                    "title": "React for Beginners",
+                    "coverPng": "https://res.cloudinary.com/dohtkyi84/image/upload/v1481226146/react-cover.png",
+                    "tags": [{ id: 1, name: "JavaScript" }],
+                    "rating": 5
+                }, {
+                    "id": 511020,
+                    "title": "Front-End automat workflow",
+                    "coverPng": "https://res.cloudinary.com/dohtkyi84/image/upload/v1481226146/react-cover.png",
+                    "tags": [{ "id": 2, "name": "gulp" }, { "id": 3, "name": "webpack" }],
+                    "rating": 4
+                }]
+            }, {
+                "name": "New Release",
+                "courses": [{
+                    "id": 511022,
+                    "title": "Vue2 for Beginners",
+                    "coverPng": "https://res.cloudinary.com/dohtkyi84/image/upload/v1481226146/react-cover.png",
+                    "tags": [{ id: 1, name: "JavaScript" }],
+                    "rating": 5
+                }, {
+                    "id": 511023,
+                    "title": "Angular2 for Beginners",
+                    "coverPng": "https://res.cloudinary.com/dohtkyi84/image/upload/v1481226146/react-cover.png",
+                    "tags": [{ id: 1, name: "JavaScript" }],
+                    "rating": 4
+                }]
+            }]
+        };
+
+        var allCourseIds = [];
+
+        //两次forEach遍历
+        user.courseLists.forEach(list => {
+            list.courses.filter(item => item.rating == 5)
+                .forEach(item => {
+                    allCourseIds.push(item)
+                })
+        })
+
+        //封装concatAll方法
+        Array.prototype.concatAll = function () {
+            var result = [];
+
+            //用apply完成
+            this.forEach((array) => {
+                result.push.apply(result, array);
+            })
+
+
+            // 用兩個 forEach 完成
+            // this.forEach((array) => {
+            //   array.forEach(item => {
+            //     result.push(item)
+            //   })
+            // });
+
+            // 用 ES6 spread 完成
+            // this.forEach((array) => {
+            //   result.push(...array);
+            // })
+
+            return result;
+        }
+
+
+        var courseLists = [{
+            "name": "My Courses",
+            "courses": [{
+                "id": 511019,
+                "title": "React for Beginners",
+                "covers": [{
+                    width: 150,
+                    height: 200,
+                    url: "http://placeimg.com/150/200/tech"
+                }, {
+                    width: 200,
+                    height: 200,
+                    url: "http://placeimg.com/200/200/tech"
+                }, {
+                    width: 300,
+                    height: 200,
+                    url: "http://placeimg.com/300/200/tech"
+                }],
+                "tags": [{
+                    id: 1,
+                    name: "JavaScript"
+                }],
+                "rating": 5
+            }, {
+                "id": 511020,
+                "title": "Front-End automat workflow",
+                "covers": [{
+                    width: 150,
+                    height: 200,
+                    url: "http://placeimg.com/150/200/arch"
+                }, {
+                    width: 200,
+                    height: 200,
+                    url: "http://placeimg.com/200/200/arch"
+                }, {
+                    width: 300,
+                    height: 200,
+                    url: "http://placeimg.com/300/200/arch"
+                }],
+                "tags": [{
+                    "id": 2,
+                    "name": "gulp"
+                }, {
+                    "id": 3,
+                    "name": "webpack"
+                }],
+                "rating": 5
+            }]
+        }, {
+            "name": "New Release",
+            "courses": [{
+                "id": 511022,
+                "title": "Vue2 for Beginners",
+                "covers": [{
+                    width: 150,
+                    height: 200,
+                    url: "http://placeimg.com/150/200/nature"
+                }, {
+                    width: 200,
+                    height: 200,
+                    url: "http://placeimg.com/200/200/nature"
+                }, {
+                    width: 300,
+                    height: 200,
+                    url: "http://placeimg.com/300/200/nature"
+                }],
+                "tags": [{
+                    id: 1,
+                    name: "JavaScript"
+                }],
+                "rating": 5
+            }, {
+                "id": 511023,
+                "title": "Angular2 for Beginners",
+                "covers": [{
+                    width: 150,
+                    height: 200,
+                    url: "http://placeimg.com/150/200/people"
+                }, {
+                    width: 200,
+                    height: 200,
+                    url: "http://placeimg.com/200/200/people"
+                }, {
+                    width: 300,
+                    height: 200,
+                    url: "http://placeimg.com/300/200/people"
+                }],
+                "tags": [{
+                    id: 1,
+                    name: "JavaScript"
+                }],
+                "rating": 5
+            }]
+        }];
+
+        Array.prototype.concatAll = function(){
+            var result = [];
+
+            this.forEach(item=>{
+                result.push(...item);
+            })
+            return result;
+        }
+
+        var result = courseLists
+                    .map(list =>list.courses
+                        .map(course=>course.covers
+                            .filter(cover=>cover.width ==150)
+                            .map(item=>({
+                                id: course.id,
+                                title: course.title,
+                                cover: item.url
+                            })
+                            
+                        )
+                    ).concatAll()
+
+                    ).concatAll()
+            console.log(result);    
     </script>
 
 
