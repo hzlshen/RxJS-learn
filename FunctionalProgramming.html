@@ -84,17 +84,66 @@
             }
         ], idAndTitle = [];
 
-        
+
         // forEach遍历数组
-        newCourseList.forEach((course)=>{
+        newCourseList.forEach((course) => {
             idAndTitle.push({
-                id:course.id,
-                title:course.title
+                id: course.id,
+                title: course.title
             })
         })
 
         //map重构
+        Array.prototype.map = function (callback) {
+            //声明一个空数组存放
+            var result = [];
+
+            this.forEach((ele, index) => {
+                //压入空数组中
+                result.push(callback(ele, index));
+                //callback回调
+            })
+            return result;
+        }
+
+        var idAndTitle = newCourseList
+            .map((course) => {
+                return { id: course.id, title: course.title };
+            });
+
+
+        //filter、
         
+        //forEach实现
+        //过滤出rating值为5的元素
+        var ratingIsFive = [];
+
+        newCourseList.forEach((course)=>{
+            if(course.rating == 5){
+                ratingIsFive.push(course);
+            }
+        })
+
+        // 用filter实现
+        Array.prototype.filter = function(callback){
+            //声明
+            var result = [];
+
+            this.forEach((item,index)=>{
+                if(callback(item,index))
+                result.push(item);
+            });
+
+            return result;
+        }
+
+        var ratingIsFive = newCourseList
+                        .filter((course)=>course.rating==5);
+
+        //这样的格式就是流式
+        var ratingIsFive = newCourseList
+                            .filter((course)=>course.rating==5)
+                            .map(course => course.title);
 
 
     </script>
