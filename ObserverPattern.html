@@ -81,6 +81,30 @@
                 })
             }
         }
+        //在内部储存了一份所有的监听者清单( this.listeners)，在要发布通知时会对逐一的呼叫这份清单的监听
+
+        //订阅Observab
+
+        var observable = Observable.create(subscriber => {
+            subscriber.next('Jerry');
+            subscriber.next('Anna');
+            subscriber.complete();
+        })
+        .map(v => v)
+        .filter(v => true)
+        .subscribe(
+            v => { console.log(v) },
+            e => { console.log(e) },
+            () => { console.log('complete') }
+        );
+
+        observable.subscribe({
+            next:(value)=>{
+                console.log(value);
+            },
+            
+        })
+
 
 
 
