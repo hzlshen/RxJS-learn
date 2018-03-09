@@ -44,8 +44,7 @@
             subscriber.next('Jerry');
             subscriber.next('Anna');
             subscriber.complete();
-        })
-            .map(v => v)
+        }).map(v => v)
             .filter(v => true)
             .subscribe(
             v => { console.log(v) },
@@ -58,8 +57,30 @@
                 console.log(value);
             },
 
+        })  
+
+        //RxJS 确实主要在处异步行为没错，但也同时能处理同步行为
+        //例子
+        var observable = Observable.create(function(observer){
+            observer.next('Jerry'); 
+		    observer.next('Anna');
         })
 
+        console.log('start');
+
+        observable.subscribe(function(val){
+            console.log(val);
+        })
+
+        console.log('end');
+
+        //打印结果是
+        // start
+        // Jerry
+        // Anna
+        // end
+
+    
 
 
     </script>
