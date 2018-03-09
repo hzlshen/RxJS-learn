@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>建立Observable</title>
+</head>
+
+<body>
+
+    <script>
+
+        // RxJs 
+        // 一个核心三个重点
+        // 一个核心是Observable 再加上相关的Operators(map,filter...)
+        // 这个部分是最重要的
+        // 三个重点分别是
+        // Observer
+        // Subject
+        // Subject
+
+        //订阅Observab
+        //订阅Observable 
+        //跟addEventListener 在实作上其实有非常大的不同。虽然在行为上很像，
+        //但实际上Observable 根本没有管理一个订阅的清单
+
+        //create Observable
+        //Rx.Observable物件中，要传入一个callback function
+
+        var observable = Observable
+            .create(function (observer) {
+                observer.next('Jerry');
+                observer.next('Anna');
+            })
+
+        // 订阅observable	
+        observable.subscribe(function (value) {
+            console.log(value);
+        })
+
+        var observable = Observable.create(subscriber => {
+            subscriber.next('Jerry');
+            subscriber.next('Anna');
+            subscriber.complete();
+        })
+            .map(v => v)
+            .filter(v => true)
+            .subscribe(
+            v => { console.log(v) },
+            e => { console.log(e) },
+            () => { console.log('complete') }
+            );
+
+        observable.subscribe({
+            next: (value) => {
+                console.log(value);
+            },
+
+        })
+
+
+
+    </script>
+
+
+</body>
+
+</html>
